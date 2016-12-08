@@ -85,12 +85,12 @@ class Main(QMainWindow, Ui_MainWindow):
 		self._learning_rate = self.learning_rate.value()
 		self._training_tolerance = self.training_tolerance.value()
 
-		print "neurons_h1", self._neurons_h1
-		print "neurons_h2", self._neurons_h2
-		print "sigmoid_function", self._sigmoid_function
-		print "num_epochs", self._num_epochs
-		print "learning_rate", self._learning_rate
-		print "training_tolerance", self._training_tolerance
+		print("neurons_h1", self._neurons_h1)
+		print("neurons_h2", self._neurons_h2)
+		print("sigmoid_function", self._sigmoid_function)
+		print("num_epochs", self._num_epochs)
+		print("learning_rate", self._learning_rate)
+		print("training_tolerance", self._training_tolerance)
 
 
 	def train(self):
