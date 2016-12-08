@@ -10,11 +10,29 @@ from spectrum_sensing import Ui_MainWindow
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt4agg import (
 	FigureCanvasQTAgg as FigureCanvas,
-  NavigationToolbar2QT as NavigationToolbar)
+	NavigationToolbar2QT as NavigationToolbar)
+
+try:
+	_fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+	def _fromUtf8(s):
+		return s
 
 class MplCanvas(FigureCanvas):
 	"""Ultimately, this is a QWidget (as well as a FigureCanvasAgg, etc.)."""
-	def __init__(self, parent=None, width=5, height=4, dpi=100):
+	def __init__(self, parent=None, width=9, height=4, dpi=100):
+
+		# self.main_frame = QWidget()
+        
+  #       # Create the mpl Figure and FigCanvas objects. 
+  #       # 5x4 inches, 100 dots-per-inch
+  #       #
+  #       self.dpi = 100
+  #       self.fig = Figure((5.0, 4.0), dpi=self.dpi)
+  #       self.canvas = FigureCanvas(self.fig)
+  #       self.canvas.setParent(self.main_frame)
+
+
 		fig = Figure(figsize=(width, height), dpi=dpi)
 		self.axes = fig.add_subplot(111)
 
@@ -23,11 +41,15 @@ class MplCanvas(FigureCanvas):
 
 		self.compute_initial_figure()
 		FigureCanvas.__init__(self, fig)
-		self.setParent(parent)
 
-		FigureCanvas.setSizePolicy(self,
-									QtGui.QSizePolicy.Expanding,
-									QtGui.QSizePolicy.Expanding)
+		self.setParent(parent)
+		# Bind the 'pick' event for clicking on one of the bars
+		# self.mpl_connect('pick_event', self.on_pick)
+		# Create the navigation toolbar, tied to the canvas
+		self.mpl_toolbar = NavigationToolbar(self, self)
+
+		expanding = QtGui.QSizePolicy.Expanding
+		FigureCanvas.setSizePolicy(self, expanding, expanding)
 		FigureCanvas.updateGeometry(self)
 
 
@@ -35,14 +57,14 @@ class DynamicMplCanvas(MplCanvas):
 	"""A canvas that updates itself every second with a new plot."""
 	def __init__(self, *args, **kwargs):
 		MplCanvas.__init__(self, *args, **kwargs)
-		timer = QtCore.QTimer(self)
-		QtCore.QObject.connect(timer,
-								QtCore.SIGNAL("timeout()"),
-								self.update_figure)
-		timer.start(1000)
+		# timer = QtCore.QTimer(self)
+		# QtCore.QObject.connect(timer, QtCore.SIGNAL("timeout()"), self.update_figure)
+		# timer.start(1000)
 
 	def compute_initial_figure(self):
 		self.axes.plot([0, 1, 2, 3], [1, 2, 0, 4], 'r')
+		self.axes.set_xlabel('Epochs')
+		self.axes.set_ylabel('Loss')
 
 	def update_figure(self):
 		# Build a list of 4 random integers between 0 and 10 (both inclusive)
@@ -57,46 +79,22 @@ class Main(QMainWindow, Ui_MainWindow):
 		self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 		self.setWindowTitle("application main window")
 		self.setupUi(self)
+		self.setupConnections()
 
-	def addDmpl(self):
+	def setupConnections(self):
 		self.dc = DynamicMplCanvas(self.epoch_loss_plot)
 
-	# def addmpl(self, fig):
-		# self.canvas = FigureCanvas(fig)
-		# self.setCentralWidget(self.canvas)
+		# QtCore.QObject.connect(self.neurons_h1, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), self.label_13.setNum)
+		# QtCore.QObject.connect(self.neurons_h2, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), self.label_13.setNum)
+		# QtCore.QObject.connect(self.sigmoid_function, QtCore.SIGNAL(_fromUtf8("textChanged(QString)")), self.label_13.setText)
+		# QtCore.QObject.connect(self.num_epochs, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), self.label_13.setNum)
+		# QtCore.QObject.connect(self.learning_rate, QtCore.SIGNAL(_fromUtf8("valueChanged(double)")), self.label_13.setNum)
+		# QtCore.QObject.connect(self.training_tolerance, QtCore.SIGNAL(_fromUtf8("valueChanged(double)")), self.label_13.setNum)
 
-		# self.epoch_loss_plot = QtGui.QWidget(self.centralwidget)
-		# self.epoch_loss_plot.setMinimumSize(QtCore.QSize(0, 300))
-		# self.epoch_loss_plot.setObjectName(_fromUtf8("epoch_loss_plot"))
-
-
-		# l = QVBoxLayout(self.epoch_loss_plot)
-		# sc = MyStaticMplCanvas(self.epoch_loss_plot, width=5, height=4, dpi=100)
-		# l.addWidget(sc)
-		# dc = MyDynamicMplCanvas(self.epoch_loss_plot, width=5, height=4, dpi=100)
-		# l.addWidget(dc)
-
-		# self.epoch_loss_plot.setFocus()
-		# self.epoch_loss_plot.addWidget(self.canvas)
-		# self.canvas.draw()
-
-
+		QtCore.QObject.connect(self.train_button, QtCore.SIGNAL(_fromUtf8("clicked()")), self.dc.update_figure)
 
 if __name__ == "__main__":
-
-	# app = QtGui.QApplication(sys.argv)
-	# MainWindow = QtGui.QMainWindow()
-	# ui = Ui_MainWindow()
-	# ui.setupUi(MainWindow)
-	# MainWindow.show()
-	# sys.exit(app.exec_())
-
-	# fig1 = Figure()
-	# ax1f1 = fig1.add_subplot(111)
-	# ax1f1.plot(np.random.rand(5))
-
 	app = QtGui.QApplication(sys.argv)
 	main = Main()
-	main.addDmpl()
 	main.show()
 	sys.exit(app.exec_())

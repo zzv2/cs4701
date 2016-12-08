@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'spectrum_sensing.ui'
 #
-# Created: Wed Dec  7 23:18:13 2016
+# Created: Thu Dec  8 00:30:39 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(639, 738)
+        MainWindow.resize(873, 824)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
@@ -91,22 +91,26 @@ class Ui_MainWindow(object):
         self.training_tolerance.setObjectName(_fromUtf8("training_tolerance"))
         self.gridLayout_3.addWidget(self.training_tolerance, 4, 1, 1, 1)
         self.verticalLayout.addWidget(self.training_params)
-        self.label_13 = QtGui.QLabel(self.centralwidget)
-        self.label_13.setObjectName(_fromUtf8("label_13"))
-        self.verticalLayout.addWidget(self.label_13)
         self.train_button = QtGui.QPushButton(self.centralwidget)
         self.train_button.setObjectName(_fromUtf8("train_button"))
         self.verticalLayout.addWidget(self.train_button)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.verticalLayout.addItem(spacerItem)
-        self.epoch_loss_plot = QtGui.QWidget(self.centralwidget)
-        self.epoch_loss_plot.setMinimumSize(QtCore.QSize(0, 300))
+        self.groupBox = QtGui.QGroupBox(self.centralwidget)
+        self.groupBox.setObjectName(_fromUtf8("groupBox"))
+        self.verticalLayout_3 = QtGui.QVBoxLayout(self.groupBox)
+        self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
+        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.verticalLayout_3.addItem(spacerItem1)
+        self.epoch_loss_plot = QtGui.QWidget(self.groupBox)
+        self.epoch_loss_plot.setMinimumSize(QtCore.QSize(0, 400))
         self.epoch_loss_plot.setMaximumSize(QtCore.QSize(16777215, 600))
         self.epoch_loss_plot.setObjectName(_fromUtf8("epoch_loss_plot"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.epoch_loss_plot)
         self.verticalLayout_2.setMargin(0)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-        self.verticalLayout.addWidget(self.epoch_loss_plot)
+        self.verticalLayout_3.addWidget(self.epoch_loss_plot)
+        self.verticalLayout.addWidget(self.groupBox)
         self.line = QtGui.QFrame(self.centralwidget)
         self.line.setFrameShape(QtGui.QFrame.HLine)
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
@@ -114,7 +118,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.line)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 639, 25))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 873, 25))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
@@ -122,12 +126,6 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        QtCore.QObject.connect(self.neurons_h1, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), self.label_13.setNum)
-        QtCore.QObject.connect(self.neurons_h2, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), self.label_13.setNum)
-        QtCore.QObject.connect(self.sigmoid_function, QtCore.SIGNAL(_fromUtf8("textChanged(QString)")), self.label_13.setText)
-        QtCore.QObject.connect(self.num_epochs, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), self.label_13.setNum)
-        QtCore.QObject.connect(self.learning_rate, QtCore.SIGNAL(_fromUtf8("valueChanged(double)")), self.label_13.setNum)
-        QtCore.QObject.connect(self.training_tolerance, QtCore.SIGNAL(_fromUtf8("valueChanged(double)")), self.label_13.setNum)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -145,8 +143,8 @@ class Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "Learning Rate", None))
         self.label_11.setText(_translate("MainWindow", "Num Epochs", None))
         self.label_4.setText(_translate("MainWindow", "Training tolerance", None))
-        self.label_13.setText(_translate("MainWindow", "TextLabel", None))
         self.train_button.setText(_translate("MainWindow", "Train", None))
+        self.groupBox.setTitle(_translate("MainWindow", "Learning Curve", None))
 
 
 if __name__ == "__main__":

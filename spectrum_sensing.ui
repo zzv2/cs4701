@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>639</width>
-    <height>738</height>
+    <width>873</width>
+    <height>824</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -149,13 +149,6 @@ Hidden Layers</string>
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label_13">
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QPushButton" name="train_button">
       <property name="text">
        <string>Train</string>
@@ -176,20 +169,42 @@ Hidden Layers</string>
      </spacer>
     </item>
     <item>
-     <widget class="QWidget" name="epoch_loss_plot" native="true">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>300</height>
-       </size>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Learning Curve</string>
       </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>600</height>
-       </size>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2"/>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QWidget" name="epoch_loss_plot" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>400</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>600</height>
+          </size>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2"/>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
     <item>
@@ -206,7 +221,7 @@ Hidden Layers</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>639</width>
+     <width>873</width>
      <height>25</height>
     </rect>
    </property>
@@ -214,102 +229,5 @@ Hidden Layers</string>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>neurons_h1</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>label_13</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>379</x>
-     <y>81</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>204</x>
-     <y>337</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>neurons_h2</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>label_13</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>375</x>
-     <y>116</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>247</x>
-     <y>332</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sigmoid_function</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>label_13</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>395</x>
-     <y>160</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>296</x>
-     <y>328</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>num_epochs</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>label_13</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>461</x>
-     <y>237</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>317</x>
-     <y>332</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>learning_rate</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>label_13</receiver>
-   <slot>setNum(double)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>333</x>
-     <y>266</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>270</x>
-     <y>332</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>training_tolerance</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>label_13</receiver>
-   <slot>setNum(double)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>365</x>
-     <y>297</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>333</x>
-     <y>333</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
