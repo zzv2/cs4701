@@ -51,7 +51,6 @@ class MplCanvas(FigureCanvas):
 class Main(QMainWindow, Ui_MainWindow):
 	def __init__(self, ):
 		super(Main, self).__init__()
-		# QMainWindow.__init__(self)
 		self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 		self.setWindowTitle("application main window")
 		self.setupUi(self)
@@ -59,7 +58,10 @@ class Main(QMainWindow, Ui_MainWindow):
 
 	def setupConnections(self):
 		self.dc = MplCanvas(self.epoch_loss_plot)
-		QtCore.QObject.connect(self.train_button, QtCore.SIGNAL(_fromUtf8("clicked()")), self.dc.update_figure)
+		QtCore.QObject.connect(self.train_button, QtCore.SIGNAL(_fromUtf8("clicked()")), self.train)
+
+	def train(self):
+		self.dc.update_figure()
 
 if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)
