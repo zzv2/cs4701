@@ -176,14 +176,27 @@ Hidden Layers</string>
      </spacer>
     </item>
     <item>
-     <widget class="QWidget" name="widget" native="true">
+     <widget class="QWidget" name="epoch_loss_plot" native="true">
       <property name="minimumSize">
        <size>
         <width>0</width>
         <height>300</height>
        </size>
       </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>600</height>
+       </size>
+      </property>
       <layout class="QVBoxLayout" name="verticalLayout_2"/>
+     </widget>
+    </item>
+    <item>
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
      </widget>
     </item>
    </layout>
@@ -295,22 +308,6 @@ Hidden Layers</string>
     <hint type="destinationlabel">
      <x>333</x>
      <y>333</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>train_button</sender>
-   <signal>clicked()</signal>
-   <receiver>label_13</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>80</x>
-     <y>361</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>93</x>
-     <y>332</y>
     </hint>
    </hints>
   </connection>

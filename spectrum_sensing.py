@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'spectrum_sensing.ui'
 #
-# Created: Wed Dec  7 21:36:47 2016
+# Created: Wed Dec  7 23:18:13 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -99,13 +99,19 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.train_button)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.verticalLayout.addItem(spacerItem)
-        self.widget = QtGui.QWidget(self.centralwidget)
-        self.widget.setMinimumSize(QtCore.QSize(0, 300))
-        self.widget.setObjectName(_fromUtf8("widget"))
-        self.verticalLayout_2 = QtGui.QVBoxLayout(self.widget)
+        self.epoch_loss_plot = QtGui.QWidget(self.centralwidget)
+        self.epoch_loss_plot.setMinimumSize(QtCore.QSize(0, 300))
+        self.epoch_loss_plot.setMaximumSize(QtCore.QSize(16777215, 600))
+        self.epoch_loss_plot.setObjectName(_fromUtf8("epoch_loss_plot"))
+        self.verticalLayout_2 = QtGui.QVBoxLayout(self.epoch_loss_plot)
         self.verticalLayout_2.setMargin(0)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-        self.verticalLayout.addWidget(self.widget)
+        self.verticalLayout.addWidget(self.epoch_loss_plot)
+        self.line = QtGui.QFrame(self.centralwidget)
+        self.line.setFrameShape(QtGui.QFrame.HLine)
+        self.line.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line.setObjectName(_fromUtf8("line"))
+        self.verticalLayout.addWidget(self.line)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 639, 25))
@@ -122,7 +128,6 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.num_epochs, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), self.label_13.setNum)
         QtCore.QObject.connect(self.learning_rate, QtCore.SIGNAL(_fromUtf8("valueChanged(double)")), self.label_13.setNum)
         QtCore.QObject.connect(self.training_tolerance, QtCore.SIGNAL(_fromUtf8("valueChanged(double)")), self.label_13.setNum)
-        QtCore.QObject.connect(self.train_button, QtCore.SIGNAL(_fromUtf8("clicked()")), self.label_13.clear)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
