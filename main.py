@@ -52,10 +52,10 @@ class DynamicMplCanvas(MplCanvas):
 
 class Main(QMainWindow, Ui_MainWindow):
 	def __init__(self, ):
-		# QMainWindow.__init__(self)
-		# self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-		# self.setWindowTitle("application main window")
 		super(Main, self).__init__()
+		# QMainWindow.__init__(self)
+		self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+		self.setWindowTitle("application main window")
 		self.setupUi(self)
 
 	def addDmpl(self):
