@@ -21,21 +21,8 @@ except AttributeError:
 class MplCanvas(FigureCanvas):
 	"""Ultimately, this is a QWidget (as well as a FigureCanvasAgg, etc.)."""
 	def __init__(self, parent=None, width=9, height=4, dpi=100):
-
-		# self.main_frame = QWidget()
-        
-  #       # Create the mpl Figure and FigCanvas objects. 
-  #       # 5x4 inches, 100 dots-per-inch
-  #       #
-  #       self.dpi = 100
-  #       self.fig = Figure((5.0, 4.0), dpi=self.dpi)
-  #       self.canvas = FigureCanvas(self.fig)
-  #       self.canvas.setParent(self.main_frame)
-
-
 		fig = Figure(figsize=(width, height), dpi=dpi)
 		self.axes = fig.add_subplot(111)
-
 		# We want the axes cleared every time plot() is called
 		self.axes.hold(False)
 
@@ -43,23 +30,12 @@ class MplCanvas(FigureCanvas):
 		FigureCanvas.__init__(self, fig)
 
 		self.setParent(parent)
-		# Bind the 'pick' event for clicking on one of the bars
-		# self.mpl_connect('pick_event', self.on_pick)
 		# Create the navigation toolbar, tied to the canvas
 		self.mpl_toolbar = NavigationToolbar(self, self)
 
 		expanding = QtGui.QSizePolicy.Expanding
 		FigureCanvas.setSizePolicy(self, expanding, expanding)
 		FigureCanvas.updateGeometry(self)
-
-
-class DynamicMplCanvas(MplCanvas):
-	"""A canvas that updates itself every second with a new plot."""
-	def __init__(self, *args, **kwargs):
-		MplCanvas.__init__(self, *args, **kwargs)
-		# timer = QtCore.QTimer(self)
-		# QtCore.QObject.connect(timer, QtCore.SIGNAL("timeout()"), self.update_figure)
-		# timer.start(1000)
 
 	def compute_initial_figure(self):
 		self.axes.plot([0, 1, 2, 3], [1, 2, 0, 4], 'r')
@@ -82,15 +58,7 @@ class Main(QMainWindow, Ui_MainWindow):
 		self.setupConnections()
 
 	def setupConnections(self):
-		self.dc = DynamicMplCanvas(self.epoch_loss_plot)
-
-		# QtCore.QObject.connect(self.neurons_h1, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), self.label_13.setNum)
-		# QtCore.QObject.connect(self.neurons_h2, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), self.label_13.setNum)
-		# QtCore.QObject.connect(self.sigmoid_function, QtCore.SIGNAL(_fromUtf8("textChanged(QString)")), self.label_13.setText)
-		# QtCore.QObject.connect(self.num_epochs, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), self.label_13.setNum)
-		# QtCore.QObject.connect(self.learning_rate, QtCore.SIGNAL(_fromUtf8("valueChanged(double)")), self.label_13.setNum)
-		# QtCore.QObject.connect(self.training_tolerance, QtCore.SIGNAL(_fromUtf8("valueChanged(double)")), self.label_13.setNum)
-
+		self.dc = MplCanvas(self.epoch_loss_plot)
 		QtCore.QObject.connect(self.train_button, QtCore.SIGNAL(_fromUtf8("clicked()")), self.dc.update_figure)
 
 if __name__ == "__main__":
