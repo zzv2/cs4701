@@ -12,6 +12,9 @@ from matplotlib.backends.backend_qt4agg import (
 	FigureCanvasQTAgg as FigureCanvas,
 	NavigationToolbar2QT as NavigationToolbar)
 
+# TODO: import polosyscode.py
+# from polosyscode import PoloskysClass
+
 try:
 	_fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -45,11 +48,12 @@ class MplCanvas(FigureCanvas):
 		self.axes.set_xlabel('Epochs')
 		self.axes.set_ylabel('Loss')
 
-	def update_figure(self, epochs, loss):
-		# Build a list of 4 random integers between 0 and 10 (both inclusive)
+	def update_epoch_loss(self, epochs, loss):
+		# Test data
 		n = 100
 		loss = [ random.randint(0, 10) for i in range(n) ]
 		epochs = [i for i in range(n)]
+
 		self.epoch_loss_plot(epochs, loss)
 		self.draw()
 
@@ -90,7 +94,9 @@ class Main(QMainWindow, Ui_MainWindow):
 
 
 	def train(self):
+		# Get Parameters from Input Fields
 		self.getParams()
+
 		# Run Training Algorithm
 		# epochs, loss = CognitiveEngine.train(
 		# 	_neurons_h1,
@@ -100,11 +106,11 @@ class Main(QMainWindow, Ui_MainWindow):
 		# 	_learning_rate,
 		# 	_training_tolerance
 		# )
-		# Update Epoch Loss Graph
 
+		# Update Epoch Loss Graph
 		# TODO: get epochs, loss
 		epochs, loss = None, None
-		self.dc.update_figure(epochs, loss)
+		self.dc.update_epoch_loss(epochs, loss)
 
 if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)
