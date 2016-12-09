@@ -2,6 +2,7 @@ import sys, random
 from PyQt4.QtGui import QApplication, QMainWindow, QVBoxLayout
 from PyQt4 import QtCore, QtGui
 from PyQt4.uic import loadUiType
+from ANN import *
 import numpy as np
 
 from spectrum_sensing import Ui_MainWindow
@@ -65,7 +66,8 @@ class Main(QMainWindow, Ui_MainWindow):
 		self.getParams()
 
 		# Setup Cognitive Engine
-		# CognitiveEngine = PoloskysClass()
+		self.CognitiveEngine = Network()
+
 
 	def setupConnections(self):
 		self.dc = MplCanvas(self.epoch_loss_plot)
@@ -96,20 +98,27 @@ class Main(QMainWindow, Ui_MainWindow):
 	def train(self):
 		# Get Parameters from Input Fields
 		self.getParams()
-
+		if self._neurons_h2 >0:
+			numHiddenLayers = 2
+		else:
+			numHiddenLayers = 1
 		# Run Training Algorithm
-		# epochs, loss = CognitiveEngine.train(
-		# 	_neurons_h1,
-		# 	_neurons_h2,
-		# 	_sigmoid_function,
-		# 	_num_epochs,
-		# 	_learning_rate,
-		# 	_training_tolerance
-		# )
+		_num_samples = 100
+		epochs, loss = self.CognitiveEngine.main(
+			1,
+			numHiddenLayers,
+			4,
+			[self._neurons_h1, self._neurons_h2],
+			#_sigmoid_function,
+			self._learning_rate,
+			self._num_epochs,
+			self._training_tolerance,
+			_num_samples
+		)
 
 		# Update Epoch Loss Graph
 		# TODO: get epochs, loss
-		epochs, loss = None, None
+		# epochs, loss = None, None
 		self.dc.update_epoch_loss(epochs, loss)
 
 if __name__ == "__main__":

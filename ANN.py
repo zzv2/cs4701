@@ -50,8 +50,8 @@ class OutputNeuron(object):
 		self.error = error
 
 class Network():
-	def __init__(self):
-		self.main()
+	#def __init__(self):
+		#self.main()
 
 	def sigmoid(self, x):
 		#x = np.arange(Decimal(30), Decimal(90))
@@ -212,28 +212,33 @@ class Network():
 			self.test(layers, rowlist, numSamples)
 
 
-	def main(self):
+	def main(self, numOutputs, numHiddenLayers, numInputs, numNeuronsHidden, learnRate, epochs, tolerance, numSamples):
 		#command line arguments follow this pattern: numOutputs, numHiddenLayers, numInputs, numNeuronsHidden0, numNeuronsHidden1,...
 		layers = dict()
 		neuronList = []
-		numInputs = int(sys.argv[3])
-		numOutputs = int(sys.argv[1])
-		numHiddenLayers = int(sys.argv[2])
-		numNeuronsHidden = []	
+		#numInputs = int(sys.argv[3])
+		#numOutputs = int(sys.argv[1])
+		#numHiddenLayers = int(sys.argv[2])
+		#numNeuronsHidden = []	
 
 		#use these numbers for example
-		inputs = [1, 1]
+		#inputs = [1, 1]
 		# weights0 = [[[0.8, 0.2], [0.4, 0.9], [0.3, 0.5]],[[0.8, 0.2, 0.1], [0.4, 0.9, 0.1], [0.3, 0.5, 0.1]]]
 		# upweights0 = [[[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]],[[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]]
 		# weights1 = [0.3, 0.5, 0.9]
 		# upweights1 = [0.0, 0.0, 0.0]
-		decision = 0
-
+		#decision = 0
+		print(numNeuronsHidden)
+		print(numHiddenLayers)
 		for x in range(0, numHiddenLayers):
-			numNeuronsHidden.append(int(sys.argv[4+x]))
-			for y in range(0, int(sys.argv[4+x])):
-				#neuronList.append(HiddenNeuron(weights0[x][y], upweights0[x][y],0,0,0,0))
-				neuronList.append(HiddenNeuron(np.random.randn(int(sys.argv[4+x-1])), np.zeros(int(sys.argv[4+x-1])), np.random.randn(1)[0], 0, 0, 0, 0))
+			#numNeuronsHidden.append(int(sys.argv[4+x]))
+			print(x)
+			for y in range(0, numNeuronsHidden[x]):
+				if x == 0:
+					neuronList.append(HiddenNeuron(np.random.randn(numInputs), np.zeros(numInputs), np.random.randn(1)[0], 0, 0, 0, 0))
+				else:
+					print("BRUH: "+str(numNeuronsHidden[x-1]))
+					neuronList.append(HiddenNeuron(np.random.randn(numNeuronsHidden[x-1]), np.zeros(numNeuronsHidden[x-1]), np.random.randn(1)[0], 0, 0, 0, 0))
 			layers["layer" + str(x+1)] = neuronList
 			neuronList = []
 		for i in range(0, numOutputs):
@@ -242,8 +247,11 @@ class Network():
 		layers["layer" + str(numHiddenLayers+1)] = neuronList
 		neuronList = []
 		
-
-		self.train(layers, "trainData.csv", 0.01, 20, 1e-5, 10)
+		# print(len(layers["layer1"][0].inWeights))
+		# print(len(layers["layer2"][0].inWeights))
+		# print(len(layers["layer3"][0].inWeights))
+		self.train(layers, "trainData.csv", learnRate, epochs, tolerance, numSamples)
+		return (None, None)
 		# print(layers["layer1"][1].inWeights[1])
 		# for k in range(1, len(layers.keys())):
 		# 	print("layer"+str(k)+"\n")
