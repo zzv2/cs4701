@@ -51,9 +51,9 @@ class MplCanvas(FigureCanvas):
 
 	def update_epoch_loss(self, epochs, loss):
 		# Test data
-		n = 100
-		loss = [ random.randint(0, 10) for i in range(n) ]
-		epochs = [i for i in range(n)]
+		# n = 100
+		# loss = [ random.randint(0, 10) for i in range(n) ]
+		# epochs = [i for i in range(n)]
 
 		self.epoch_loss_plot(epochs, loss)
 		self.draw()

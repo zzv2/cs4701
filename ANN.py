@@ -165,14 +165,15 @@ class Network():
 		# print(layers["layer2"][0].upWeights)
 		numInputs = 4
 		neuronList = []
+		totalError = np.array(np.ones(epochs))
 		epochError = np.array(np.ones(numSamples))
 		with open(dataFile, "r") as csvfile:
 			reader = csv.reader(csvfile)
 			rowlist = list(reader)
 			random.shuffle(rowlist)
 			for i in range(0, epochs):
-				if i >=epochs:
-					break
+				# if i >=epochs:
+				# 	break
 				k = 0
 				csvfile.seek(0)
 				for row in rowlist:
@@ -187,7 +188,7 @@ class Network():
 					layers["layer0"] = neuronList
 					neuronList = []
 					(layers, result) = self.forwardPropagation(layers)
-					epochError[k] = abs(result - decision)
+					epochError[k] = pow(abs(result - decision), 2.0)
 					layers = self.backPropagation(layers, decision, learnRate, tolerance, numSamples)
 					k+=1
 					if k >=numSamples:#
@@ -202,6 +203,7 @@ class Network():
 								upLayer[y].upWeights = np.zeros(len(upLayer[y].upWeights))
 						#print(np.sum(epochError))
 						break
+				totalError[i] = np.sum(epochError)
 			# layers["layer0"][0].output = -20
 			# layers["layer0"][1].output = 0.1148
 			# layers["layer0"][2].output = 0.014
@@ -210,6 +212,8 @@ class Network():
 			#printWeights(layers)
 			# print("FINAL: "+str(result))
 			self.test(layers, rowlist, numSamples)
+			#print(totalError)
+			return (np.array([i for i in range(0, len(totalError))]), totalError)
 
 
 	def main(self, numOutputs, numHiddenLayers, numInputs, numNeuronsHidden, learnRate, epochs, tolerance, numSamples):
@@ -220,7 +224,8 @@ class Network():
 		#numOutputs = int(sys.argv[1])
 		#numHiddenLayers = int(sys.argv[2])
 		#numNeuronsHidden = []	
-
+		
+		numNeuronsHidden = numNeuronsHidden[:numHiddenLayers]
 		#use these numbers for example
 		#inputs = [1, 1]
 		# weights0 = [[[0.8, 0.2], [0.4, 0.9], [0.3, 0.5]],[[0.8, 0.2, 0.1], [0.4, 0.9, 0.1], [0.3, 0.5, 0.1]]]
@@ -228,16 +233,12 @@ class Network():
 		# weights1 = [0.3, 0.5, 0.9]
 		# upweights1 = [0.0, 0.0, 0.0]
 		#decision = 0
-		print(numNeuronsHidden)
-		print(numHiddenLayers)
 		for x in range(0, numHiddenLayers):
 			#numNeuronsHidden.append(int(sys.argv[4+x]))
-			print(x)
 			for y in range(0, numNeuronsHidden[x]):
 				if x == 0:
 					neuronList.append(HiddenNeuron(np.random.randn(numInputs), np.zeros(numInputs), np.random.randn(1)[0], 0, 0, 0, 0))
 				else:
-					print("BRUH: "+str(numNeuronsHidden[x-1]))
 					neuronList.append(HiddenNeuron(np.random.randn(numNeuronsHidden[x-1]), np.zeros(numNeuronsHidden[x-1]), np.random.randn(1)[0], 0, 0, 0, 0))
 			layers["layer" + str(x+1)] = neuronList
 			neuronList = []
@@ -249,9 +250,8 @@ class Network():
 		
 		# print(len(layers["layer1"][0].inWeights))
 		# print(len(layers["layer2"][0].inWeights))
-		# print(len(layers["layer3"][0].inWeights))
-		self.train(layers, "trainData.csv", learnRate, epochs, tolerance, numSamples)
-		return (None, None)
+		#print(len(layers["layer3"][0].inWeights))
+		return self.train(layers, "trainData.csv", learnRate, epochs, tolerance, numSamples)
 		# print(layers["layer1"][1].inWeights[1])
 		# for k in range(1, len(layers.keys())):
 		# 	print("layer"+str(k)+"\n")
