@@ -47,6 +47,9 @@
            </item>
            <item row="0" column="1">
             <widget class="QSpinBox" name="neurons_h1">
+             <property name="minimum">
+              <number>1</number>
+             </property>
              <property name="value">
               <number>10</number>
              </property>
@@ -92,13 +95,6 @@ Hidden Layers</string>
            <string>Training Params</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_3">
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>Learning Rate</string>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_11">
              <property name="text">
@@ -106,20 +102,17 @@ Hidden Layers</string>
              </property>
             </widget>
            </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Learning Rate</string>
+             </property>
+            </widget>
+           </item>
            <item row="4" column="0">
             <widget class="QLabel" name="label_4">
              <property name="text">
               <string>Training tolerance</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QSpinBox" name="num_epochs">
-             <property name="maximum">
-              <number>1000000</number>
-             </property>
-             <property name="value">
-              <number>100</number>
              </property>
             </widget>
            </item>
@@ -139,6 +132,16 @@ Hidden Layers</string>
              </property>
             </widget>
            </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="num_epochs">
+             <property name="maximum">
+              <number>1000000</number>
+             </property>
+             <property name="value">
+              <number>100</number>
+             </property>
+            </widget>
+           </item>
            <item row="4" column="1">
             <widget class="QDoubleSpinBox" name="training_tolerance">
              <property name="decimals">
@@ -152,6 +155,29 @@ Hidden Layers</string>
              </property>
              <property name="value">
               <double>0.000010000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Number of Samples</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QSpinBox" name="num_samples">
+             <property name="minimum">
+              <number>100</number>
+             </property>
+             <property name="maximum">
+              <number>100000</number>
+             </property>
+             <property name="singleStep">
+              <number>100</number>
+             </property>
+             <property name="value">
+              <number>1000</number>
              </property>
             </widget>
            </item>
