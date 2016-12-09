@@ -86,6 +86,7 @@ class Main(QMainWindow, Ui_MainWindow):
 		self._num_epochs = self.num_epochs.value()
 		self._learning_rate = self.learning_rate.value()
 		self._training_tolerance = self.training_tolerance.value()
+		self._num_samples = self.num_samples.value()
 
 		print("neurons_h1", self._neurons_h1)
 		print("neurons_h2", self._neurons_h2)
@@ -93,6 +94,7 @@ class Main(QMainWindow, Ui_MainWindow):
 		print("num_epochs", self._num_epochs)
 		print("learning_rate", self._learning_rate)
 		print("training_tolerance", self._training_tolerance)
+		print("num_samples", self._num_samples)
 
 
 	def train(self):
@@ -103,7 +105,6 @@ class Main(QMainWindow, Ui_MainWindow):
 		else:
 			numHiddenLayers = 1
 		# Run Training Algorithm
-		_num_samples = 100
 		epochs, loss = self.CognitiveEngine.main(
 			1,
 			numHiddenLayers,
@@ -113,7 +114,7 @@ class Main(QMainWindow, Ui_MainWindow):
 			self._learning_rate,
 			self._num_epochs,
 			self._training_tolerance,
-			_num_samples
+			self._num_samples
 		)
 
 		# Update Epoch Loss Graph
