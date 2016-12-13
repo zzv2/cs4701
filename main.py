@@ -2,7 +2,7 @@ import sys, random
 from PyQt4.QtGui import QApplication, QMainWindow, QVBoxLayout
 from PyQt4 import QtCore, QtGui
 from PyQt4.uic import loadUiType
-from ANN import *
+from newNet import *
 import numpy as np
 
 from spectrum_sensing import Ui_MainWindow
@@ -66,7 +66,7 @@ class Main(QMainWindow, Ui_MainWindow):
 		self.getParams()
 
 		# Setup Cognitive Engine
-		self.CognitiveEngine = Network()
+		
 
 
 	def setupConnections(self):
@@ -100,21 +100,19 @@ class Main(QMainWindow, Ui_MainWindow):
 	def train(self):
 		# Get Parameters from Input Fields
 		self.getParams()
+		batch_size = 100
 		if self._neurons_h2 >0:
-			numHiddenLayers = 2
+			self.CognitiveEngine = Network([4,self._neurons_h1, self._neurons_h2, 1])
 		else:
-			numHiddenLayers = 1
+			self.CognitiveEngine = Network([4, self._neurons_h1, 1])
 		# Run Training Algorithm
-		epochs, loss = self.CognitiveEngine.main(
-			1,
-			numHiddenLayers,
-			4,
-			[self._neurons_h1, self._neurons_h2],
-			#_sigmoid_function,
+		epochs, loss = self.CognitiveEngine.train(
+			"trainData.csv",
 			self._learning_rate,
 			self._num_epochs,
 			self._training_tolerance,
-			self._num_samples
+			self._num_samples,
+			batch_size
 		)
 
 		# Update Epoch Loss Graph
