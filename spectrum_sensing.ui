@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>873</width>
-    <height>824</height>
+    <width>707</width>
+    <height>860</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,7 +51,7 @@
               <number>1</number>
              </property>
              <property name="value">
-              <number>10</number>
+              <number>5</number>
              </property>
             </widget>
            </item>
@@ -82,7 +82,7 @@ Hidden Layers</string>
            <item row="1" column="1">
             <widget class="QSpinBox" name="neurons_h2">
              <property name="value">
-              <number>5</number>
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -95,6 +95,13 @@ Hidden Layers</string>
            <string>Training Params</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_3">
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Training tolerance</string>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_11">
              <property name="text">
@@ -102,17 +109,19 @@ Hidden Layers</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>Learning Rate</string>
+           <item row="5" column="1">
+            <widget class="QSpinBox" name="num_samples">
+             <property name="minimum">
+              <number>100</number>
              </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>Training tolerance</string>
+             <property name="maximum">
+              <number>100000</number>
+             </property>
+             <property name="singleStep">
+              <number>1000</number>
+             </property>
+             <property name="value">
+              <number>2000</number>
              </property>
             </widget>
            </item>
@@ -128,7 +137,14 @@ Hidden Layers</string>
               <double>0.001000000000000</double>
              </property>
              <property name="value">
-              <double>0.010000000000000</double>
+              <double>0.001000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Learning Rate</string>
              </property>
             </widget>
            </item>
@@ -137,8 +153,11 @@ Hidden Layers</string>
              <property name="maximum">
               <number>1000000</number>
              </property>
-             <property name="value">
+             <property name="singleStep">
               <number>100</number>
+             </property>
+             <property name="value">
+              <number>300</number>
              </property>
             </widget>
            </item>
@@ -165,11 +184,15 @@ Hidden Layers</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="1">
-            <widget class="QSpinBox" name="num_samples">
-             <property name="minimum">
-              <number>100</number>
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Batch Size</string>
              </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QSpinBox" name="batch_size">
              <property name="maximum">
               <number>100000</number>
              </property>
@@ -177,42 +200,46 @@ Hidden Layers</string>
               <number>100</number>
              </property>
              <property name="value">
-              <number>1000</number>
+              <number>100</number>
              </property>
             </widget>
            </item>
           </layout>
          </widget>
         </item>
-        <item>
+        <item alignment="Qt::AlignHCenter">
          <widget class="QPushButton" name="train_button">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>500</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>500</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
            <string>Train</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="groupBox">
+         <widget class="QGroupBox" name="learning_curve">
           <property name="title">
            <string>Learning Curve</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
-            <widget class="QWidget" name="epoch_loss_plot" native="true">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>400</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>600</height>
-              </size>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_2"/>
-            </widget>
+            <widget class="MatplotlibWidget" name="epoch_loss_plot"/>
            </item>
           </layout>
          </widget>
@@ -230,6 +257,9 @@ Hidden Layers</string>
            <string>Test</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <widget class="MatplotlibWidget" name="test_plot"/>
         </item>
        </layout>
       </widget>
@@ -249,13 +279,20 @@ Hidden Layers</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>873</width>
+     <width>707</width>
      <height>21</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MatplotlibWidget</class>
+   <extends>QWidget</extends>
+   <header>matplotlibwidget</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

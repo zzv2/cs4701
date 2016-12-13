@@ -6,6 +6,7 @@ import csv
 import random
 from decimal import Decimal
 import numpy as np
+from matplotlibwidget import MatplotlibWidget
 
 
 class Network(object):
@@ -39,10 +40,10 @@ class Network(object):
 			inputs = self.sigmoid(weightedSum)
 		return inputs
 
-	def test(self, rowlist, numSamples):
+	def test(self, numSamples):
 		errorList = np.array([])
 		correctList = np.array([])
-		for row in rowlist[numSamples:(numSamples+100)]:
+		for row in self.rowlist[numSamples:(numSamples+100)]:
 			decision = np.array([float(row[-1])])
 			inputs = np.array([[float(x)] for x in row[:-1]])
 			inputs = np.multiply(np.array([[(1/100)], [(1/100)], [(1/10)], [(1/1000)]]), inputs)
@@ -54,38 +55,45 @@ class Network(object):
 		print("Total Error: " + str(np.sum(errorList)))
 		print("Total Incorrect: " + str(np.sum(correctList)))
 
-	def train(self, dataFile, learnRate, epochs, tolerance, numSamples, batchsize):
-		weightUpdateMatrix = []
-		biasUpdateMatrix = []
-		weightUpdateMatrix = [np.zeros(x.shape) for x in self.weightMatrix]
-		biasUpdateMatrix = [np.zeros(y.shape) for y in self.biasMatrix]
-		totalError = np.array(np.zeros(epochs))
-		epochError = np.array(np.zeros(numSamples))
+	def train_setup(self, dataFile, epochs, numSamples):
+		# self.weightUpdateMatrix = []
+		# self.biasUpdateMatrix = []
+		self.weightUpdateMatrix = [np.zeros(x.shape) for x in self.weightMatrix]
+		self.biasUpdateMatrix = [np.zeros(y.shape) for y in self.biasMatrix]
+		self.epochs_arr = np.arange(epochs)
+		self.totalError = np.array(np.zeros(epochs))
+		self.epochError = np.array(np.zeros(numSamples))
 		with open(dataFile, "r") as csvfile:
 			reader = csv.reader(csvfile)
-			rowlist = list(reader)
+			self.rowlist = list(reader)
 			#random.shuffle(rowlist)
-			for i in range(0, epochs):
-				k = 0
-				csvfile.seek(0)
-				for row in rowlist:
-					decision = np.array([float(row[-1])])
-					inputs = np.array([[float(x)] for x in row[:-1]])
-					inputs = np.multiply(np.array([[(1/100)], [(1/100)], [(1/10)], [(1/1000)]]), inputs)
-					(weightChange, biasChange, result) = self.propagate(inputs, decision)
-					weightUpdateMatrix = np.add(weightUpdateMatrix, weightChange)
-					biasUpdateMatrix = np.add(biasUpdateMatrix, biasChange)
-					epochError[k-1] = pow(abs(result - decision), 2.0)
-					k+=1
-					if k>numSamples:
-						break
-					if k%batchsize == 0:
-						self.weightMatrix = np.subtract(self.weightMatrix, np.multiply(np.array([(learnRate/numSamples)]), weightUpdateMatrix))
-						self.biasMatrix = np.subtract(self.biasMatrix, np.multiply(np.array([(learnRate/numSamples)]), biasUpdateMatrix))
-				print("Epoch "+str(i)+": "+str(np.sum(epochError)))
-				totalError[i] = np.sum(epochError)
-			self.test(rowlist, numSamples)
-			return (np.array([i for i in range(0, len(totalError))]), totalError)
+
+	def train(self, dataFile, learnRate, epochs, tolerance, numSamples, batchsize, plot=None):
+		for i in range(epochs):
+			# csvfile.seek(0)
+			self.run_epoch(learnRate, numSamples, batchsize, i)
+		self.test(numSamples)
+		return (self.epochs_arr, self.totalError)
+
+	def run_epoch(self, learnRate, numSamples, batchsize, i):
+		k = 0
+		for row in self.rowlist:
+			decision = np.array([float(row[-1])])
+			inputs = np.array([[float(x)] for x in row[:-1]])
+			inputs = np.multiply(np.array([[(1/100)], [(1/100)], [(1/10)], [(1/1000)]]), inputs)
+			(weightChange, biasChange, result) = self.propagate(inputs, decision)
+			self.weightUpdateMatrix = np.add(self.weightUpdateMatrix, weightChange)
+			self.biasUpdateMatrix = np.add(self.biasUpdateMatrix, biasChange)
+			self.epochError[k-1] = pow(abs(result - decision), 2.0)
+			k+=1
+			if k>numSamples:
+				break
+			if k%batchsize == 0:
+				self.weightMatrix = np.subtract(self.weightMatrix, np.multiply(np.array([(learnRate/numSamples)]), self.weightUpdateMatrix))
+				self.biasMatrix = np.subtract(self.biasMatrix, np.multiply(np.array([(learnRate/numSamples)]), self.biasUpdateMatrix))
+		self.totalError[i] = np.sum(self.epochError)
+		print("Epoch "+str(i)+": "+str(self.totalError[i]))
+		return (self.epochs_arr, self.totalError)
 
 	def propagate(self, inputs, decision):
 		weightUpdateMatrix = []
