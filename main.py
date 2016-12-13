@@ -1,4 +1,4 @@
-import sys, random, time
+import sys, random, time, threading
 from PyQt4.QtGui import QApplication, QMainWindow, QVBoxLayout
 from PyQt4 import QtCore, QtGui
 from PyQt4.uic import loadUiType
@@ -29,19 +29,22 @@ class Main(QMainWindow, Ui_MainWindow):
 	def __init__(self, ):
 		super(Main, self).__init__()
 		self.setupUi(self)
-		self.setupConnections()
+		self.setup()
 		self.getParams()
 
-	def update_epoch_loss_plot(self, x, y, color='r'):
-		self.epoch_loss_plot.axes.plot(x, y, color)
-		self.epoch_loss_plot.axes.set_xlabel('Epochs')
-		self.epoch_loss_plot.axes.set_ylabel('Loss')
-		self.epoch_loss_plot.axes.set_title('Learning Curve')
-		self.epoch_loss_plot.draw()
-		time.sleep(.1)
-
-	def setupConnections(self):
+	def setup(self):
+		# Connections
 		QtCore.QObject.connect(self.train_button, QtCore.SIGNAL(_fromUtf8("clicked()")), self.train)
+		self.lock = threading.Lock()
+		self.epochs, self.loss = None, None
+
+	def update_epoch_loss_plot(self, x, y, color='r'):
+		with self.lock:
+			self.epoch_loss_plot.axes.plot(x, y, color)
+			self.epoch_loss_plot.axes.set_xlabel('Epochs')
+			self.epoch_loss_plot.axes.set_ylabel('Loss')
+			self.epoch_loss_plot.axes.set_title('Learning Curve')
+			self.epoch_loss_plot.draw()
 
 	def getParams(self):
 		self._neurons_h1 = self.neurons_h1.value()
@@ -66,20 +69,25 @@ class Main(QMainWindow, Ui_MainWindow):
 		# Get Parameters from Input Fields
 		self.getParams()
 
-		if self._neurons_h2 > 0:
-			self.ANN = Network([4,self._neurons_h1, self._neurons_h2, 1])
-		else:
-			self.ANN = Network([4, self._neurons_h1, 1])
+		# if self._neurons_h2 > 0:
+		# 	self.ANN = Network([4,self._neurons_h1, self._neurons_h2, 1])
+		# else:
+		# 	self.ANN = Network([4, self._neurons_h1, 1])
 
-		# Run Training Algorithm
-		self.ANN.train_setup("trainData.csv", self._num_epochs, self._num_samples)
-		for i in range(self._num_epochs):
-			epochs, loss = self.ANN.run_epoch(self._learning_rate, self._num_samples, self._batch_size, i)
-			print(len(epochs))
-			self.update_epoch_loss_plot(epochs, loss)
-			print("update plot...")
-		self.ANN.test(numSamples)
-		# return (self.ANN.epochs_arr, self.ANN.totalError)
+		# # Run Training Algorithm
+		# self.ANN.train_setup("trainData.csv", self._num_epochs, self._num_samples)
+		# for i in range(self._num_epochs):
+		# 	self.lock.acquire()
+		# 	epochs, loss = self.ANN.run_epoch(self._learning_rate, self._num_samples, self._batch_size, i)
+		# 	self.lock.release()
+		# 	# print(len(epochs))
+		# 	# self.update_epoch_loss_plot(epochs, loss)
+		# 	thread = threading.Thread(target=self.update_epoch_loss_plot, args=(epochs, loss))
+		# 	thread.daemon = True
+		# 	thread.start()
+		# 	print("update plot...")
+		# 	time.sleep(3)
+		# self.ANN.test(numSamples)
 
 		# epochs, loss = self.ANN.train(
 		# 	"trainData.csv",
@@ -91,11 +99,27 @@ class Main(QMainWindow, Ui_MainWindow):
 		# )
 
 		# Update Epoch Loss Graph
-		# Test data
-		# n = 100
-		# loss = [ random.randint(0, 10) for i in range(n) ]
-		# epochs = [i for i in range(n)]
-		# self.update_epoch_loss_plot(epochs, loss)
+		for a in range(10):
+			# self.update_epoch_loss_plot(epochs, loss)
+			data_thread = threading.Thread(target=self.get_epoch_loss, args=())
+			# data_thread.daemon = True
+			data_thread.start()
+			data_thread.join()
+
+			plot_thread = threading.Thread(target=self.update_epoch_loss_plot, args=(self.epochs, self.loss))
+			# plot_thread.daemon = True
+			plot_thread.start()
+			plot_thread.join()
+			print("updated plot...")
+			self.centralwidget.repaint()
+
+	def get_epoch_loss(self):
+		with self.lock:
+			n = 100
+			loss = [ random.randint(0, 10) for i in range(n) ]
+			epochs = [i for i in range(n)]
+			time.sleep(.5)
+			self.epochs, self.loss = epochs, loss
 
 if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)
