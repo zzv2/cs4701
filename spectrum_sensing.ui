@@ -260,9 +260,12 @@ Hidden Layers</string>
      </widget>
     </item>
     <item>
-     <widget class="Line" name="line">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+     <widget class="QLabel" name="copyright">
+      <property name="text">
+       <string>Copyright 2016 Zach Zweig-Vinegar, Nick Polosky</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -287,6 +290,19 @@ Hidden Layers</string>
    <header>matplotlibwidget</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>neurons_h1</tabstop>
+  <tabstop>neurons_h2</tabstop>
+  <tabstop>sigmoid_function</tabstop>
+  <tabstop>num_epochs</tabstop>
+  <tabstop>learning_rate</tabstop>
+  <tabstop>training_tolerance</tabstop>
+  <tabstop>num_samples</tabstop>
+  <tabstop>batch_size</tabstop>
+  <tabstop>train_button</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>test_button</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

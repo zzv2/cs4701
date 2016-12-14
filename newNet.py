@@ -6,7 +6,6 @@ import csv
 import random
 from decimal import Decimal
 import numpy as np
-from matplotlibwidget import MatplotlibWidget
 
 
 class Network(object):

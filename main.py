@@ -1,11 +1,10 @@
-import sys, random, time, threading
+import sys, random
 from PyQt4.QtGui import QApplication, QMainWindow, QVBoxLayout
 from PyQt4 import QtCore, QtGui
 from PyQt4.uic import loadUiType
-from newNet import *
 import numpy as np
 
-
+from newNet import *
 from spectrum_sensing import Ui_MainWindow
 # generate with 'pyuic4 -x spectrum_sensing.ui -o spectrum_sensing.py'
 
@@ -13,11 +12,6 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt4agg import (
 	FigureCanvasQTAgg as FigureCanvas,
 	NavigationToolbar2QT as NavigationToolbar)
-
-from matplotlibwidget import MatplotlibWidget
-
-# TODO: import polosyscode.py
-# from polosyscode import PoloskysClass
 
 try:
 	_fromUtf8 = QtCore.QString.fromUtf8
@@ -29,12 +23,13 @@ class Main(QMainWindow, Ui_MainWindow):
 	def __init__(self, ):
 		super(Main, self).__init__()
 		self.setupUi(self)
-		self.setup()
 		self.getParams()
+		self.setup()
 
 	def setup(self):
 		# Connections
 		QtCore.QObject.connect(self.train_button, QtCore.SIGNAL(_fromUtf8("clicked()")), self.train)
+		self.update_epoch_loss_plot([],[])
 
 	def update_epoch_loss_plot(self, x, y, color='r'):
 		self.epoch_loss_plot.axes.plot(x, y, color)
