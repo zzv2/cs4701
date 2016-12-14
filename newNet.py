@@ -70,7 +70,6 @@ class Network(object):
 
 	def train(self, dataFile, learnRate, epochs, tolerance, numSamples, batchsize, plot=None):
 		for i in range(epochs):
-			# csvfile.seek(0)
 			self.run_epoch(learnRate, numSamples, batchsize, i)
 		self.test(numSamples)
 		return (self.epochs_arr, self.totalError)

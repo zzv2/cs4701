@@ -35,16 +35,16 @@ class Main(QMainWindow, Ui_MainWindow):
 	def setup(self):
 		# Connections
 		QtCore.QObject.connect(self.train_button, QtCore.SIGNAL(_fromUtf8("clicked()")), self.train)
-		self.lock = threading.Lock()
-		self.epochs, self.loss = None, None
 
 	def update_epoch_loss_plot(self, x, y, color='r'):
-		with self.lock:
-			self.epoch_loss_plot.axes.plot(x, y, color)
-			self.epoch_loss_plot.axes.set_xlabel('Epochs')
-			self.epoch_loss_plot.axes.set_ylabel('Loss')
-			self.epoch_loss_plot.axes.set_title('Learning Curve')
-			self.epoch_loss_plot.draw()
+		self.epoch_loss_plot.axes.plot(x, y, color)
+		self.epoch_loss_plot.axes.set_xlabel('Epochs')
+		self.epoch_loss_plot.axes.set_ylabel('Loss')
+		self.epoch_loss_plot.axes.set_title('Learning Curve')
+		self.epoch_loss_plot.axes.set_xlim([0, self._num_epochs])
+		self.epoch_loss_plot.axes.set_ylim(bottom=0)
+		self.epoch_loss_plot.draw()
+		self.centralwidget.repaint()
 
 	def getParams(self):
 		self._neurons_h1 = self.neurons_h1.value()
@@ -66,60 +66,31 @@ class Main(QMainWindow, Ui_MainWindow):
 		print("batch_size", self._batch_size) # how frequently update weights
 
 	def train(self):
-		# Get Parameters from Input Fields
-		self.getParams()
+		try:
+			# Disable Input Fields
+			self.run.setEnabled(False)
 
-		# if self._neurons_h2 > 0:
-		# 	self.ANN = Network([4,self._neurons_h1, self._neurons_h2, 1])
-		# else:
-		# 	self.ANN = Network([4, self._neurons_h1, 1])
+			# Get Parameters from Input Fields
+			self.getParams()
 
-		# # Run Training Algorithm
-		# self.ANN.train_setup("trainData.csv", self._num_epochs, self._num_samples)
-		# for i in range(self._num_epochs):
-		# 	self.lock.acquire()
-		# 	epochs, loss = self.ANN.run_epoch(self._learning_rate, self._num_samples, self._batch_size, i)
-		# 	self.lock.release()
-		# 	# print(len(epochs))
-		# 	# self.update_epoch_loss_plot(epochs, loss)
-		# 	thread = threading.Thread(target=self.update_epoch_loss_plot, args=(epochs, loss))
-		# 	thread.daemon = True
-		# 	thread.start()
-		# 	print("update plot...")
-		# 	time.sleep(3)
-		# self.ANN.test(numSamples)
+			if self._neurons_h2 > 0:
+				self.ANN = Network([4,self._neurons_h1, self._neurons_h2, 1])
+			else:
+				self.ANN = Network([4, self._neurons_h1, 1])
 
-		# epochs, loss = self.ANN.train(
-		# 	"trainData.csv",
-		# 	self._learning_rate,
-		# 	self._num_epochs,
-		# 	self._training_tolerance,
-		# 	self._num_samples,
-		# 	self._batch_size
-		# )
+			# Run Training Algorithm
+			self.ANN.train_setup("trainData.csv", self._num_epochs, self._num_samples)
+			for i in range(self._num_epochs):
+				epochs, loss = self.ANN.run_epoch(self._learning_rate, self._num_samples, self._batch_size, i)
+				self.update_epoch_loss_plot(epochs[:i+1], loss[: i+1])
 
-		# Update Epoch Loss Graph
-		for a in range(10):
-			# self.update_epoch_loss_plot(epochs, loss)
-			data_thread = threading.Thread(target=self.get_epoch_loss, args=())
-			# data_thread.daemon = True
-			data_thread.start()
-			data_thread.join()
+			self.ANN.test(self._num_samples)
 
-			plot_thread = threading.Thread(target=self.update_epoch_loss_plot, args=(self.epochs, self.loss))
-			# plot_thread.daemon = True
-			plot_thread.start()
-			plot_thread.join()
-			print("updated plot...")
-			self.centralwidget.repaint()
+		except KeyboardInterrupt:
+			print("Canceled Training")
 
-	def get_epoch_loss(self):
-		with self.lock:
-			n = 100
-			loss = [ random.randint(0, 10) for i in range(n) ]
-			epochs = [i for i in range(n)]
-			time.sleep(.5)
-			self.epochs, self.loss = epochs, loss
+		finally:
+			self.run.setEnabled(True)
 
 if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)
