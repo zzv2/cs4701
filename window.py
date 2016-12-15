@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'spectrum_sensing.ui'
+# Form implementation generated from reading ui file 'window.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -22,12 +22,12 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_SpectrumSensingNN(object):
-    def setupUi(self, SpectrumSensingNN):
-        SpectrumSensingNN.setObjectName(_fromUtf8("SpectrumSensingNN"))
-        SpectrumSensingNN.resize(782, 897)
-        SpectrumSensingNN.setAccessibleName(_fromUtf8(""))
-        self.centralwidget = QtGui.QWidget(SpectrumSensingNN)
+class Ui_SpectrumSensingGUI(object):
+    def setupUi(self, SpectrumSensingGUI):
+        SpectrumSensingGUI.setObjectName(_fromUtf8("SpectrumSensingGUI"))
+        SpectrumSensingGUI.resize(782, 897)
+        SpectrumSensingGUI.setAccessibleName(_fromUtf8(""))
+        self.centralwidget = QtGui.QWidget(SpectrumSensingGUI)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
@@ -81,9 +81,9 @@ class Ui_SpectrumSensingNN(object):
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.gridLayout_3.addWidget(self.label_3, 2, 0, 1, 1)
         self.training_tolerance = QtGui.QDoubleSpinBox(self.training_params)
-        self.training_tolerance.setDecimals(7)
+        self.training_tolerance.setDecimals(3)
         self.training_tolerance.setMaximum(1.0)
-        self.training_tolerance.setSingleStep(1e-06)
+        self.training_tolerance.setSingleStep(0.01)
         self.training_tolerance.setProperty("value", 0.3)
         self.training_tolerance.setObjectName(_fromUtf8("training_tolerance"))
         self.gridLayout_3.addWidget(self.training_tolerance, 4, 1, 1, 1)
@@ -94,9 +94,9 @@ class Ui_SpectrumSensingNN(object):
         self.label_6.setObjectName(_fromUtf8("label_6"))
         self.gridLayout_3.addWidget(self.label_6, 5, 0, 1, 1)
         self.learning_rate = QtGui.QDoubleSpinBox(self.training_params)
-        self.learning_rate.setDecimals(4)
+        self.learning_rate.setDecimals(3)
         self.learning_rate.setMaximum(1.0)
-        self.learning_rate.setSingleStep(0.01)
+        self.learning_rate.setSingleStep(0.001)
         self.learning_rate.setProperty("value", 0.01)
         self.learning_rate.setObjectName(_fromUtf8("learning_rate"))
         self.gridLayout_3.addWidget(self.learning_rate, 2, 1, 1, 1)
@@ -139,41 +139,41 @@ class Ui_SpectrumSensingNN(object):
         self.copyright.setAlignment(QtCore.Qt.AlignCenter)
         self.copyright.setObjectName(_fromUtf8("copyright"))
         self.verticalLayout.addWidget(self.copyright)
-        SpectrumSensingNN.setCentralWidget(self.centralwidget)
-        self.menubar = QtGui.QMenuBar(SpectrumSensingNN)
+        SpectrumSensingGUI.setCentralWidget(self.centralwidget)
+        self.menubar = QtGui.QMenuBar(SpectrumSensingGUI)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 782, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
-        SpectrumSensingNN.setMenuBar(self.menubar)
-        self.statusbar = QtGui.QStatusBar(SpectrumSensingNN)
+        SpectrumSensingGUI.setMenuBar(self.menubar)
+        self.statusbar = QtGui.QStatusBar(SpectrumSensingGUI)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
-        SpectrumSensingNN.setStatusBar(self.statusbar)
+        SpectrumSensingGUI.setStatusBar(self.statusbar)
 
-        self.retranslateUi(SpectrumSensingNN)
-        QtCore.QMetaObject.connectSlotsByName(SpectrumSensingNN)
-        SpectrumSensingNN.setTabOrder(self.neurons_h1, self.neurons_h2)
-        SpectrumSensingNN.setTabOrder(self.neurons_h2, self.num_epochs)
-        SpectrumSensingNN.setTabOrder(self.num_epochs, self.learning_rate)
-        SpectrumSensingNN.setTabOrder(self.learning_rate, self.training_tolerance)
-        SpectrumSensingNN.setTabOrder(self.training_tolerance, self.num_samples)
-        SpectrumSensingNN.setTabOrder(self.num_samples, self.batch_size)
-        SpectrumSensingNN.setTabOrder(self.batch_size, self.train_button)
+        self.retranslateUi(SpectrumSensingGUI)
+        QtCore.QMetaObject.connectSlotsByName(SpectrumSensingGUI)
+        SpectrumSensingGUI.setTabOrder(self.neurons_h1, self.neurons_h2)
+        SpectrumSensingGUI.setTabOrder(self.neurons_h2, self.num_epochs)
+        SpectrumSensingGUI.setTabOrder(self.num_epochs, self.learning_rate)
+        SpectrumSensingGUI.setTabOrder(self.learning_rate, self.training_tolerance)
+        SpectrumSensingGUI.setTabOrder(self.training_tolerance, self.num_samples)
+        SpectrumSensingGUI.setTabOrder(self.num_samples, self.batch_size)
+        SpectrumSensingGUI.setTabOrder(self.batch_size, self.train_button)
 
-    def retranslateUi(self, SpectrumSensingNN):
-        SpectrumSensingNN.setWindowTitle(_translate("SpectrumSensingNN", "SpectrumSensingGUI", None))
-        self.network_params.setTitle(_translate("SpectrumSensingNN", "Network Params", None))
-        self.label_2.setText(_translate("SpectrumSensingNN", "Number of neurons in\n"
+    def retranslateUi(self, SpectrumSensingGUI):
+        SpectrumSensingGUI.setWindowTitle(_translate("SpectrumSensingGUI", "SpectrumSensingGUI", None))
+        self.network_params.setTitle(_translate("SpectrumSensingGUI", "Network Params", None))
+        self.label_2.setText(_translate("SpectrumSensingGUI", "Number of neurons in\n"
 "Hidden Layer 2", None))
-        self.label.setText(_translate("SpectrumSensingNN", "Number of neurons in\n"
+        self.label.setText(_translate("SpectrumSensingGUI", "Number of neurons in\n"
 "Hidden Layer 1", None))
-        self.training_params.setTitle(_translate("SpectrumSensingNN", "Training Params", None))
-        self.label_11.setText(_translate("SpectrumSensingNN", "Num Epochs", None))
-        self.label_3.setText(_translate("SpectrumSensingNN", "Learning Rate", None))
-        self.label_4.setText(_translate("SpectrumSensingNN", "Training tolerance", None))
-        self.label_6.setText(_translate("SpectrumSensingNN", "Number of Samples", None))
-        self.label_7.setText(_translate("SpectrumSensingNN", "Batch Size", None))
-        self.label_5.setText(_translate("SpectrumSensingNN", "Test Samples", None))
-        self.train_button.setText(_translate("SpectrumSensingNN", "Train", None))
-        self.learning_curve.setTitle(_translate("SpectrumSensingNN", "Results", None))
-        self.copyright.setText(_translate("SpectrumSensingNN", "Copyright 2016 Zach Zweig-Vinegar, Nick Polosky", None))
+        self.training_params.setTitle(_translate("SpectrumSensingGUI", "Training Params", None))
+        self.label_11.setText(_translate("SpectrumSensingGUI", "Num Epochs", None))
+        self.label_3.setText(_translate("SpectrumSensingGUI", "Learning Rate", None))
+        self.label_4.setText(_translate("SpectrumSensingGUI", "Training tolerance", None))
+        self.label_6.setText(_translate("SpectrumSensingGUI", "Number of Samples", None))
+        self.label_7.setText(_translate("SpectrumSensingGUI", "Batch Size", None))
+        self.label_5.setText(_translate("SpectrumSensingGUI", "Test Samples", None))
+        self.train_button.setText(_translate("SpectrumSensingGUI", "Train", None))
+        self.learning_curve.setTitle(_translate("SpectrumSensingGUI", "Results", None))
+        self.copyright.setText(_translate("SpectrumSensingGUI", "Copyright 2016 Zach Zweig-Vinegar, Nick Polosky", None))
 
 from matplotlibwidget import MatplotlibWidget
