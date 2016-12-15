@@ -39,20 +39,21 @@ class Network(object):
 			inputs = self.sigmoid(weightedSum)
 		return inputs
 
-	def test(self, numSamples):
+	def test(self, numSamples, testnumber):
 		errorList = np.array([])
 		correctList = np.array([])
-		for row in self.rowlist[numSamples:(numSamples+100)]:
+		for row in self.rowlist[-testnumber:]:
 			decision = np.array([float(row[-1])])
 			inputs = np.array([[float(x)] for x in row[:-1]])
 			inputs = np.multiply(np.array([[(1/100)], [(1/100)], [(1/10)], [(1/1000)]]), inputs)
 			result = self.compute(inputs)
-			print("result: "+str(result)+" decision: "+str(decision))
+			# print("result: "+str(result)+" decision: "+str(decision))
 			final = 0 if result<0.5 else 1
-			errorList = np.append(errorList, abs(result-decision))
+			errorList = np.append(errorList, pow(abs(result-decision), 2.0))
 			correctList = np.append(correctList, abs(final - decision))
-		print("Total Error: " + str(np.sum(errorList)))
-		print("Total Incorrect: " + str(np.sum(correctList)))
+		# print("Total Error: " + str(np.sum(errorList)))
+		print("Percent Correct: " + str((1- (np.sum(correctList)/testnumber))*100.0)+"%")
+		return np.sqrt(np.sum(errorList)/testnumber)
 
 	def train_setup(self, dataFile, epochs, numSamples):
 		# self.weightUpdateMatrix = []
@@ -60,12 +61,13 @@ class Network(object):
 		self.weightUpdateMatrix = [np.zeros(x.shape) for x in self.weightMatrix]
 		self.biasUpdateMatrix = [np.zeros(y.shape) for y in self.biasMatrix]
 		self.epochs_arr = np.arange(epochs)
+		#self.totalError = np.array(np.zeros(epochs))
 		self.totalError = np.array(np.zeros(epochs))
 		self.epochError = np.array(np.zeros(numSamples))
 		with open(dataFile, "r") as csvfile:
 			reader = csv.reader(csvfile)
 			self.rowlist = list(reader)
-			#random.shuffle(rowlist)
+			
 
 	def train(self, dataFile, learnRate, epochs, tolerance, numSamples, batchsize, plot=None):
 		for i in range(epochs):
@@ -73,8 +75,12 @@ class Network(object):
 		self.test(numSamples)
 		return (self.epochs_arr, self.totalError)
 
-	def run_epoch(self, learnRate, numSamples, batchsize, i):
+	def run_epoch(self, learnRate, numSamples, tolerance, batchsize, i, testnumber):
 		k = 0
+		truthArray = np.array(np.zeros(numSamples))
+		# self.weightUpdateMatrix = [np.zeros(x.shape) for x in self.weightMatrix]
+		# self.biasUpdateMatrix = [np.zeros(y.shape) for y in self.biasMatrix]
+		random.shuffle(self.rowlist)
 		for row in self.rowlist:
 			decision = np.array([float(row[-1])])
 			inputs = np.array([[float(x)] for x in row[:-1]])
@@ -83,15 +89,18 @@ class Network(object):
 			self.weightUpdateMatrix = np.add(self.weightUpdateMatrix, weightChange)
 			self.biasUpdateMatrix = np.add(self.biasUpdateMatrix, biasChange)
 			self.epochError[k-1] = pow(abs(result - decision), 2.0)
+			truthArray[k-1] = 1 if abs(result-decision) < tolerance else 0
 			k+=1
 			if k>numSamples:
 				break
 			if k%batchsize == 0:
 				self.weightMatrix = np.subtract(self.weightMatrix, np.multiply(np.array([(learnRate/numSamples)]), self.weightUpdateMatrix))
 				self.biasMatrix = np.subtract(self.biasMatrix, np.multiply(np.array([(learnRate/numSamples)]), self.biasUpdateMatrix))
-		self.totalError[i] = np.sum(self.epochError)
-		print("Epoch "+str(i)+": "+str(self.totalError[i]))
-		return (self.epochs_arr, self.totalError)
+		# self.totalError[i] = np.sum(self.epochError)
+		self.totalError[i] = self.test(numSamples, testnumber)
+		print("Epoch "+str(i)+": "+str(self.totalError[i]) + " tolsum: "+str(np.sum(truthArray)))
+		done = np.sum(truthArray)>len(truthArray)-1
+		return (self.epochs_arr, self.totalError, done)
 
 	def propagate(self, inputs, decision):
 		weightUpdateMatrix = []

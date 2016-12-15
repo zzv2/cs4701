@@ -3,6 +3,7 @@ from PyQt4.QtGui import QApplication, QMainWindow, QVBoxLayout
 from PyQt4 import QtCore, QtGui
 from PyQt4.uic import loadUiType
 import numpy as np
+import csv
 
 from newNet import *
 from spectrum_sensing import Ui_SpectrumSensingNN
@@ -74,12 +75,23 @@ class Main(QMainWindow, Ui_SpectrumSensingNN):
 				self.ANN = Network([4, self._neurons_h1, 1])
 
 			# Run Training Algorithm
+			done = False
 			self.ANN.train_setup("trainData.csv", self._num_epochs, self._num_samples)
-			for i in range(self._num_epochs):
-				epochs, loss = self.ANN.run_epoch(self._learning_rate, self._num_samples, self._batch_size, i)
+			#for i in range(self._num_epochs):
+			i=0
+			while True:
+				if i % 100 == 0:
+					self._learning_rate = self._learning_rate/2
+				epochs, loss, done = self.ANN.run_epoch(self._learning_rate, self._num_samples, self._training_tolerance, self._batch_size, i, self._test_samples)
 				self.update_epoch_loss_plot(epochs[:i+1], loss[: i+1])
+				i+=1
+				if done or i>len(epochs)-1:
+					with open("trainResults.csv", "w", newline="")as resFile:
+						writer = csv.writer(resFile)
+						writer.writerow(loss.tolist())
+					break
 
-			self.ANN.test(self._num_samples)
+			self.ANN.test(self._num_samples, self._test_samples)
 
 		except KeyboardInterrupt:
 			print("Canceled Training")
