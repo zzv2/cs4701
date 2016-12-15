@@ -5,7 +5,7 @@ from PyQt4.uic import loadUiType
 import numpy as np
 
 from newNet import *
-from spectrum_sensing import Ui_MainWindow
+from spectrum_sensing import Ui_SpectrumSensingNN
 # generate with 'pyuic4 -x spectrum_sensing.ui -o spectrum_sensing.py'
 
 from matplotlib.figure import Figure
@@ -19,7 +19,7 @@ except AttributeError:
 	def _fromUtf8(s):
 		return s
 
-class Main(QMainWindow, Ui_MainWindow):
+class Main(QMainWindow, Ui_SpectrumSensingNN):
 	def __init__(self, ):
 		super(Main, self).__init__()
 		self.setupUi(self)
@@ -44,21 +44,21 @@ class Main(QMainWindow, Ui_MainWindow):
 	def getParams(self):
 		self._neurons_h1 = self.neurons_h1.value()
 		self._neurons_h2 = self.neurons_h2.value()
-		self._sigmoid_function = str(self.sigmoid_function.currentText())
 		self._num_epochs = self.num_epochs.value()
 		self._learning_rate = self.learning_rate.value()
 		self._training_tolerance = self.training_tolerance.value()
 		self._num_samples = self.num_samples.value()
 		self._batch_size = self.batch_size.value()
+		self._test_samples = self.test_samples.value()
 
 		print("neurons_h1", self._neurons_h1)
 		print("neurons_h2", self._neurons_h2)
-		print("sigmoid_function", self._sigmoid_function)
 		print("num_epochs", self._num_epochs)
 		print("learning_rate", self._learning_rate)
 		print("training_tolerance", self._training_tolerance)
 		print("num_samples", self._num_samples)
 		print("batch_size", self._batch_size) # how frequently update weights
+		print("test_samples", self._test_samples)
 
 	def train(self):
 		try:
