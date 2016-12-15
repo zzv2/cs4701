@@ -1,5 +1,3 @@
-cd 'C:\Users\eathu\Dropbox\Cornell\Senior\CS 4701\cs4701'
-
 open WinPython Command Prompt
 cd "C:\Users\eathu\Dropbox\Cornell\Senior\CS 4701\cs4701"
 pyuic4 spectrum_sensing.ui > spectrum_sensing.py
