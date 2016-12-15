@@ -5,7 +5,7 @@ from PyQt4.uic import loadUiType
 import numpy as np
 
 from newNet import *
-from spectrum_sensing import Ui_SpectrumSensingNN
+from window import Ui_SpectrumSensingGUI
 # generate with 'pyuic4 -x spectrum_sensing.ui -o spectrum_sensing.py'
 
 from matplotlib.figure import Figure
@@ -19,7 +19,7 @@ except AttributeError:
 	def _fromUtf8(s):
 		return s
 
-class Main(QMainWindow, Ui_SpectrumSensingNN):
+class Main(QMainWindow, Ui_SpectrumSensingGUI):
 	def __init__(self, ):
 		super(Main, self).__init__()
 		self.setupUi(self)
