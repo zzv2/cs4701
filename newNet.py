@@ -19,11 +19,8 @@ class Network(object):
 		for i in range(0, len(structure)-1):
 			self.weightMatrix.append(np.array(np.random.randn(structure[i]*structure[i+1])).reshape(structure[i+1], structure[i]))
 			self.biasMatrix.append(np.array(np.random.randn(structure[i+1])).reshape(structure[i+1], 1))
-		# print(self.weightMatrix)
-		# print(self.biasMatrix)
 
 	def sigmoid(self, x):
-		#x = np.arange(Decimal(30), Decimal(90))
 		try:
 			sig = (1.0/(1.0 + np.exp(-x)))
 		except Warning:
@@ -47,21 +44,16 @@ class Network(object):
 			inputs = np.array([[float(x)] for x in row[:-1]])
 			inputs = np.multiply(np.array([[(1/100)], [(1/100)], [(1/10)], [(1/1000)]]), inputs)
 			result = self.compute(inputs)
-			# print("result: "+str(result)+" decision: "+str(decision))
 			final = 0 if result<0.5 else 1
 			errorList = np.append(errorList, pow(abs(result-decision), 2.0))
 			correctList = np.append(correctList, abs(final - decision))
-		# print("Total Error: " + str(np.sum(errorList)))
 		print("Percent Correct: " + str((1- (np.sum(correctList)/testnumber))*100.0)+"%")
 		return np.sqrt(np.sum(errorList)/testnumber)
 
 	def train_setup(self, dataFile, epochs, numSamples):
-		# self.weightUpdateMatrix = []
-		# self.biasUpdateMatrix = []
 		self.weightUpdateMatrix = [np.zeros(x.shape) for x in self.weightMatrix]
 		self.biasUpdateMatrix = [np.zeros(y.shape) for y in self.biasMatrix]
 		self.epochs_arr = np.arange(epochs)
-		#self.totalError = np.array(np.zeros(epochs))
 		self.totalError = np.array(np.zeros(epochs))
 		self.epochError = np.array(np.zeros(numSamples))
 		with open(dataFile, "r") as csvfile:
@@ -78,8 +70,6 @@ class Network(object):
 	def run_epoch(self, learnRate, numSamples, tolerance, batchsize, i, testnumber):
 		k = 0
 		truthArray = np.array(np.zeros(numSamples))
-		# self.weightUpdateMatrix = [np.zeros(x.shape) for x in self.weightMatrix]
-		# self.biasUpdateMatrix = [np.zeros(y.shape) for y in self.biasMatrix]
 		random.shuffle(self.rowlist)
 		for row in self.rowlist:
 			decision = np.array([float(row[-1])])
@@ -96,7 +86,6 @@ class Network(object):
 			if k%batchsize == 0:
 				self.weightMatrix = np.subtract(self.weightMatrix, np.multiply(np.array([(learnRate/numSamples)]), self.weightUpdateMatrix))
 				self.biasMatrix = np.subtract(self.biasMatrix, np.multiply(np.array([(learnRate/numSamples)]), self.biasUpdateMatrix))
-		# self.totalError[i] = np.sum(self.epochError)
 		self.totalError[i] = self.test(numSamples, testnumber)
 		print("Epoch "+str(i)+": "+str(self.totalError[i]) + " tolsum: "+str(np.sum(truthArray)))
 		done = np.sum(truthArray)>len(truthArray)-1
@@ -124,8 +113,6 @@ class Network(object):
 			error = error * self.weightMatrix[i+1].transpose() * self.dsigmoidDX(sums[i])
 			biasUpdateMatrix[i] = error
 			weightUpdateMatrix[i] = np.dot(error, outputs[i-1].transpose())
-		# print(weightUpdateMatrix)
-		# print(biasUpdateMatrix)
 		return (weightUpdateMatrix, biasUpdateMatrix, outputs[-1])
 		
 def main():
@@ -133,8 +120,6 @@ def main():
 	for i in range(1, len(sys.argv)):
 		structure.append(int(sys.argv[i]))
 	net = Network(structure)
-	#net.propagate(np.array([[1.0],[1.0]]), np.array([0.0]))
-	#net.train("trainData.csv", 0.01, 300, 1e-5, 2000, 200)
 
 if __name__ == '__main__':
 	main()
