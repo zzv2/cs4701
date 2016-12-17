@@ -58,7 +58,7 @@ class Network():
 		try:
 			sig = (1.0/(1.0 + np.exp(-x)))
 		except Warning:
-			print("THis is whats fucking up: "+str(x))
+			print("Error: "+str(x))
 		return sig
 
 	def dsigmoidDX(self, x):
@@ -75,7 +75,7 @@ class Network():
 		#print("error: "+ str(output_neuron.error))
 		for i in range(0, len(output_neuron.inWeights)):
 			nabla = output_neuron.error * layers["layer" + str(size-2)][i].output
-			#print("GAY output: "+str(layers["layer" + str(size-2)][i].output))
+			#print("output: "+str(layers["layer" + str(size-2)][i].output))
 			# if nabla < 0:
 			#print("NABLA: " + str(nabla))
 			output_neuron.upWeights[i] += nabla
@@ -109,7 +109,6 @@ class Network():
 
 
 	def forwardPropagation(self, layers):
-		#do shit here
 		size = len(layers.keys())
 		for x in range(1, size):
 			currentLayer = layers["layer" + str(x)]
@@ -258,7 +257,6 @@ class Network():
 		# 	for thing in layers["layer" + str(k)]:
 		# 		print(thing.inWeights)
 		# 		print("\n")
-		# print("WHAT THE FUCK:")
 		# print(layers["layer"+str(2)][0].inWeights)
 
 

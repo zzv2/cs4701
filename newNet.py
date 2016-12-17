@@ -24,7 +24,7 @@ class Network(object):
 		try:
 			sig = (1.0/(1.0 + np.exp(-x)))
 		except Warning:
-			print("THis is whats fucking up: "+str(x))
+			print("Error: "+str(x))
 		return sig
 
 	def dsigmoidDX(self, x):
